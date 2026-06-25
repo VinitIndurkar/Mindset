@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINDSET</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+
+<!-- Custom cursor -->
+<div id="cursor" class="cursor"></div>
+
+<!-- ============ INTRO SCREEN ============ -->
+<section id="intro" class="intro">
+  <div class="intro-bg" aria-hidden="true"></div>
+
+  <div class="intro-stage">
+    <!-- Chloe character -->
+    <div class="chloe" id="chloe">
+      <div class="chloe-eyewhite" aria-hidden="true">
+        <svg viewBox="0 0 118 57" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="99" cy="28" rx="19" ry="28"/>
+          <ellipse cx="19" cy="28" rx="19" ry="28"/>
+        </svg>
+      </div>
+      <div class="chloe-pupil chloe-pupil--left" id="pupilLeft"></div>
+      <div class="chloe-pupil chloe-pupil--right" id="pupilRight"></div>
+    </div>
+
+    <h1 class="intro-greeting" id="introGreeting">Welcome</h1>
+  </div>
+
+  <button class="intro-enter" id="introEnter" aria-label="Enter MINDSET">
+    <span>Click anywhere to continue</span>
+  </button>
+</section>
+
+<!-- ============ APP SHELL (hidden until intro completes) ============ -->
+<div id="app" class="app" hidden>
+
+  <!-- Mini Chloe, corner mascot -->
+  <div class="chloe-mini" id="chloeMini">
+    <div class="chloe-mini-eyewhite" aria-hidden="true">
+      <svg viewBox="0 0 118 57" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="99" cy="28" rx="19" ry="28"/>
+        <ellipse cx="19" cy="28" rx="19" ry="28"/>
+      </svg>
+    </div>
+    <div class="chloe-mini-pupil chloe-mini-pupil--left"></div>
+    <div class="chloe-mini-pupil chloe-mini-pupil--right"></div>
+  </div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left stat-chip" id="topbarDay">1 / 1095</div>
+    <div class="topbar-right">
+      <button class="lvl-pill stat-chip" id="lvlPill" aria-expanded="false">LVL <span id="lvlNum">1</span></button>
+      <span class="stat-streak stat-chip" id="statStreak">0</span>
+      <span class="stat-freeze stat-chip" id="statFreeze">0</span>
+    </div>
+  </header>
+
+  <!-- XP reveal panel (hidden by default, toggled by lvl pill) -->
+  <div class="xp-panel" id="xpPanel" hidden>
+    <div class="xp-bar"><div class="xp-bar-fill" id="xpFill"></div></div>
+    <span class="xp-label" id="xpLabel">0 / 100 XP</span>
+  </div>
+
+  <!-- Menu trigger -->
+  <button class="menu-trigger" id="menuTrigger" aria-label="Open menu" aria-expanded="false">
+    <span class="menu-line menu-line--top"></span>
+    <span class="menu-line menu-line--mid"></span>
+    <span class="menu-line menu-line--bottom"></span>
+  </button>
+
+  <!-- Slide-in menu panel -->
+  <nav class="menu-panel" id="menuPanel" aria-hidden="true">
+    <div class="menu-panel-inner">
+      <div class="menu-theme-row">
+        <span class="menu-theme-label">Appearance</span>
+        <label class="theme-toggle">
+          <input type="checkbox" id="themeToggle">
+          <span class="theme-toggle-track"></span>
+        </label>
+      </div>
+
+      <ul class="menu-list">
+        <li><button class="menu-item is-active" data-view="dashboard">Dashboard</button></li>
+        <li><button class="menu-item" data-view="roadmap">Roadmap</button></li>
+        <li><button class="menu-item" data-view="attendance">Attendance</button></li>
+        <li><button class="menu-item" data-view="mistakes">Mistakes</button></li>
+        <li><button class="menu-item" data-view="backup">Backup</button></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="menu-curtain" id="menuCurtain" aria-hidden="true"></div>
+
+  <!-- Main views -->
+  <main class="views">
+    <section class="view is-active" id="view-dashboard" data-view="dashboard">
+      <div class="dashboard">
+        <p class="dashboard-eyebrow">Execution Engine Active</p>
+        <h1 class="dashboard-title">MINDSET</h1>
+
+        <div class="task-block task-block--study">
+          <div class="galaxy-label-wrap" data-galaxy-label="Study"></div>
+          <ul class="task-list" id="studyList"></ul>
+        </div>
+
+        <div class="task-block task-block--exercise">
+          <div class="galaxy-label-wrap" data-galaxy-label="Exercise"></div>
+          <ul class="task-list" id="exerciseList"></ul>
+        </div>
+
+        <div class="task-block task-block--weekly" id="weeklyBlock" hidden>
+          <div class="galaxy-label-wrap" data-galaxy-label="Boss Fight"></div>
+          <ul class="task-list" id="weeklyList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-roadmap" data-view="roadmap">
+      <div class="roadmap">
+        <p class="view-eyebrow">1095 Days</p>
+        <h1 class="view-title">Roadmap</h1>
+        <p class="roadmap-sidetrack">Parallel side-track: bug bounty hunting, informally from Phase 2 onward.</p>
+        <ol class="phase-track" id="phaseTrack"></ol>
+      </div>
+    </section>
+
+    <section class="view" id="view-attendance" data-view="attendance">
+      <div class="attendance">
+        <p class="view-eyebrow">Auto-tracked</p>
+        <h1 class="view-title">Attendance</h1>
+        <p class="attendance-note">Counted only on days both Study and Exercise are fully complete.</p>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="stat-card-value" id="attCurrentStreak">0</span>
+            <span class="stat-card-label">Current streak</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card-value" id="attBestStreak">0</span>
+            <span class="stat-card-label">Best streak</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card-value" id="attTotalDays">0</span>
+            <span class="stat-card-label">Total days</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-card-value" id="attMonthPct">0%</span>
+            <span class="stat-card-label">This month</span>
+          </div>
+        </div>
+
+        <p class="attendance-missed" id="attendanceMissed"></p>
+      </div>
+    </section>
+
+    <section class="view" id="view-mistakes" data-view="mistakes">
+      <div class="mistakes">
+        <p class="view-eyebrow">Self-log</p>
+        <h1 class="view-title">Mistakes</h1>
+        <p class="mistakes-note">Write down what went wrong. Short is fine.</p>
+
+        <form class="mistake-form" id="mistakeForm">
+          <textarea class="mistake-input" id="mistakeInput" placeholder="What happened today?" rows="2" maxlength="280"></textarea>
+          <button type="submit" class="mistake-submit">Add</button>
+        </form>
+
+        <ul class="mistake-list" id="mistakeList"></ul>
+        <p class="mistake-empty" id="mistakeEmpty">Nothing logged yet.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-backup" data-view="backup">
+      <div class="backup">
+        <p class="view-eyebrow">Your data</p>
+        <h1 class="view-title">Backup</h1>
+        <p class="backup-note">Everything lives only on this device. Export a copy so you don't lose it.</p>
+
+        <div class="backup-actions">
+          <button class="backup-btn" id="exportBtn">
+            <span class="backup-btn-title">Export</span>
+            <span class="backup-btn-sub">Download a JSON file of everything</span>
+          </button>
+
+          <label class="backup-btn" for="importInput">
+            <span class="backup-btn-title">Import</span>
+            <span class="backup-btn-sub">Restore from a previously exported file</span>
+          </label>
+          <input type="file" id="importInput" accept="application/json" hidden>
+        </div>
+
+        <p class="backup-status" id="backupStatus"></p>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<script src="tasks.js"></script>
+<script src="weekly.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
